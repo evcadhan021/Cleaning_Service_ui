@@ -12,6 +12,15 @@ class _MainPageState extends State<MainPage> {
   String selectedType = "bersih";
   String selectedFrequency = 'monthly';
 
+  Map<String, bool> selectedExtras = {
+    'Dapur': false,
+    'Memasak': false,
+    'Tirai Kecil': false,
+    'Teras': false,
+    'Belanja': false,
+    'Tirai Besar': false,
+  };
+
   void onChangePaketType(String type) {
     selectedType = type;
     setState(() {});
@@ -19,6 +28,11 @@ class _MainPageState extends State<MainPage> {
 
   void changeFrequency(String frequency) {
     selectedFrequency = frequency;
+    setState(() {});
+  }
+
+  void toggleExtra(String extraName) {
+    selectedExtras[extraName] = !selectedExtras[extraName]!;
     setState(() {});
   }
 
@@ -292,20 +306,41 @@ class _MainPageState extends State<MainPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                extraWidget('es', 'Dapur', true),
-                extraWidget('belanja', 'Memasak', false),
-                extraWidget('tirai', 'Tirai Kecil', false),
+                InkWell(
+                  onTap: () => toggleExtra('Dapur'),
+                  child: extraWidget('es', 'Dapur', selectedExtras['Dapur']!),
+                ),
+                InkWell(
+                  onTap: () => toggleExtra('Memasak'),
+                  child: extraWidget(
+                      'belanja', 'Memasak', selectedExtras['Memasak']!),
+                ),
+                InkWell(
+                  onTap: () => toggleExtra('Tirai Kecil'),
+                  child: extraWidget(
+                      'tirai', 'Tirai Kecil', selectedExtras['Tirai Kecil']!),
+                ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                extraWidget('teras', 'Teras', false),
-                extraWidget('belanja', 'Belanja', false),
-                extraWidget('tirai', 'Tirai Besar', false),
+                InkWell(
+                  onTap: () => toggleExtra('Teras'),
+                  child:
+                      extraWidget('teras', 'Teras', selectedExtras['Teras']!),
+                ),
+                InkWell(
+                  onTap: () => toggleExtra('Belanja'),
+                  child: extraWidget(
+                      'belanja', 'Belanja', selectedExtras['Belanja']!),
+                ),
+                InkWell(
+                  onTap: () => toggleExtra('Tirai Besar'),
+                  child: extraWidget(
+                      'tirai', 'Tirai Besar', selectedExtras['Tirai Besar']!),
+                ),
               ],
             ),
           ],
@@ -336,7 +371,7 @@ class _MainPageState extends State<MainPage> {
             Positioned(
               top: 0,
               right: 0,
-              child: isSelected == true
+              child: isSelected
                   ? Container(
                       height: 30,
                       width: 30,
@@ -353,9 +388,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 5),
         Text(
           name,
           style: const TextStyle(fontWeight: FontWeight.w500),
